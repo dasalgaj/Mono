@@ -13,7 +13,8 @@ namespace Mono.Interfaces
         Task<bool> DeletePostMake(int? id);
 
         //VEHICLEMODEL
-        bool AddModel(ModelStateDictionary ModelState, VehicleModel vehicleModel);
+        Vehicles AddModelGet();
+        bool AddModel(ModelStateDictionary ModelState, Vehicles vehicles);
         Task<VehicleModel?> UpdateDeleteModelGet(int? id);
         bool UpdatePostModel(ModelStateDictionary ModelState, VehicleModel vehicleMake);
         Task<bool> DeletePostModel(int? id);

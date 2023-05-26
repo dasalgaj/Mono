@@ -7,7 +7,7 @@
 			<hr />
 		</div>
 		<div class="mb-3">
-			<select asp-for="vehicleMake.id" asp-items="Model.vehicleMakeList" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+			<select asp-for="vehicleModel.make_id" asp-items="Model.vehicleMakeList" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
 				<option selected>Select vehicle make</option>
 			</select>
 			
@@ -23,7 +23,7 @@
 			<span asp-validation-for="vehicleModel.abrv" class="text-danger"></span>
 		</div>
 		<button type="submit" class="btn btn-primary" style="width:150px">Create</button>
-		<a asp-controller="Vehicle" asp-action="Index" class="btn btn-secondary" style="width:150px">
+		<a asp-controller="Model" asp-action="Index" class="btn btn-secondary" style="width:150px">
 			Back
 		</a>
 	</div>

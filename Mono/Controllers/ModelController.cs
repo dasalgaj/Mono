@@ -68,14 +68,14 @@ namespace Mono.Controllers
         //CREATE
         //GET
         public IActionResult Create()
-        {
-            return View();
+        {     
+            return View(_service.AddModelGet());
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(VehicleModel obj)
+        public IActionResult Create(Vehicles obj)
         {
 
             if (_service.AddModel(ModelState, obj))
@@ -88,7 +88,7 @@ namespace Mono.Controllers
 
         //EDIT
         //GET
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
             {
@@ -100,7 +100,7 @@ namespace Mono.Controllers
                 return NotFound();
             }
 
-            return View(_service.UpdateDeleteModelGet(id));
+            return View(await _service.UpdateDeleteModelGet(id));
         }
 
         //POST
@@ -119,7 +119,7 @@ namespace Mono.Controllers
 
         //DELETE
         //GET
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
             {
@@ -131,16 +131,19 @@ namespace Mono.Controllers
                 return NotFound();
             }
 
-            return View(_service.UpdateDeleteModelGet(id));
+            return View(await _service.UpdateDeleteModelGet(id));
         }
 
         //POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? id)
+        public async Task<IActionResult> DeletePOST(int? id)
         {
+            Task<bool> deleteTask = _service.DeletePostModel(id);
 
-            if (_service.DeletePostModel(id))
+            bool b = await deleteTask;
+
+            if (b)
             {
                 return RedirectToAction("Index");
             }

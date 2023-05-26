@@ -76,7 +76,7 @@ namespace Mono.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VehicleMake obj)
+        public IActionResult Create(VehicleMake obj)
         {
 
             if (_service.AddMake(ModelState, obj))
@@ -89,7 +89,7 @@ namespace Mono.Controllers
 
         //EDIT
         //GET
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
             {
@@ -101,7 +101,7 @@ namespace Mono.Controllers
                 return NotFound();
             }
 
-            return View(_service.UpdateDeleteMakeGet(id));
+            return View(await _service.UpdateDeleteMakeGet(id));
         }
 
         //POST
@@ -120,7 +120,7 @@ namespace Mono.Controllers
 
         //DELETE
         //GET
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
             {
@@ -132,16 +132,19 @@ namespace Mono.Controllers
                 return NotFound();
             }
 
-            return View(_service.UpdateDeleteMakeGet(id));
+            return View(await _service.UpdateDeleteMakeGet(id));
         }
 
         //POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? id)
-        {            
+        public async Task<IActionResult> DeletePOST(int? id)
+        {
+            Task<bool> deleteTask = _service.DeletePostMake(id);
 
-            if (_service.DeletePostMake(id))
+            bool b = await deleteTask;
+
+            if (b)
             {
                 return RedirectToAction("Index");
             }

@@ -1,5 +1,6 @@
 ﻿using cloudscribe.Pagination.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mono.Data;
 using Mono.Interfaces;
@@ -70,12 +71,28 @@ namespace Mono.Models
         }
 
         // VEHICLEMODEL
-        // ADD POST
-        public bool AddModel(ModelStateDictionary ModelState, VehicleModel obj)
+        // ADD GET
+        public Vehicles AddModelGet()
         {
+            Vehicles vehicles = new Vehicles();
+
+            vehicles.vehicleMakeList = _db.VehicleMake.Select(s => new SelectListItem
+            {
+                Selected = false,
+                Text = s.abrv,
+                Value = s.id.ToString()
+            });
+
+            return vehicles;
+        
+        }
+
+        // ADD POST
+        public bool AddModel(ModelStateDictionary ModelState, Vehicles vehicles)
+        {          
             if (ModelState.IsValid)
             {
-                _db.VehicleModel.Add(obj);
+                _db.VehicleModel.Add(vehicles.vehicleModel);
                 _db.SaveChanges();
 
                 return true;
